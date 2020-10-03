@@ -35,7 +35,8 @@ def prepare_data(data):
     real_imgs = []
     for i in range(len(imgs)):
         imgs[i] = imgs[i][sorted_cap_indices]
-        if cfg.CUDA:
+        #if cfg.CUDA:
+        if torch.cuda.is_available():
             real_imgs.append(Variable(imgs[i]).cuda())
         else:
             real_imgs.append(Variable(imgs[i]))
@@ -45,7 +46,8 @@ def prepare_data(data):
     # sent_indices = sent_indices[sorted_cap_indices]
     keys = [keys[i] for i in sorted_cap_indices.numpy()]
     # print('keys', type(keys), keys[-1])  # list
-    if cfg.CUDA:
+    #if cfg.CUDA:
+    if torch.cuda.is_available():
         captions = Variable(captions).cuda()
         sorted_cap_lens = Variable(sorted_cap_lens).cuda()
     else:

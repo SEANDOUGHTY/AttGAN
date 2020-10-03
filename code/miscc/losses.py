@@ -30,7 +30,8 @@ def sent_loss(cnn_code, rnn_code, labels, class_ids,
         masks = np.concatenate(masks, 0)
         # masks: batch_size x batch_size
         masks = torch.ByteTensor(masks)
-        if cfg.CUDA:
+        #if cfg.CUDA:
+        if torch.cuda.is_available():
             masks = masks.cuda()
 
     # --> seq_len x batch_size x nef
@@ -117,7 +118,8 @@ def words_loss(img_features, words_emb, labels,
         masks = np.concatenate(masks, 0)
         # masks: batch_size x batch_size
         masks = torch.ByteTensor(masks)
-        if cfg.CUDA:
+        #if cfg.CUDA:
+        if torch.cuda.is_available():
             masks = masks.cuda()
 
     similarities = similarities * cfg.TRAIN.SMOOTH.GAMMA3
