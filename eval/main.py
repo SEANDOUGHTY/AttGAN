@@ -65,7 +65,7 @@ def get_bird():
 if __name__ == '__main__':
     t0 = time.time()
     tc = TelemetryClient(os.environ["TELEMETRY"])
-    
+
     # gpu based
     cfg.CUDA = os.environ["GPU"].lower() == 'true'
     tc.track_event('container initializing', {"CUDA": str(cfg.CUDA)})
@@ -75,7 +75,7 @@ if __name__ == '__main__':
     # lead models
     text_encoder, netG = models(len(wordtoix))
     # load blob service
-    blob_service = BlockBlobService(account_name='attgan', account_key=os.environ["BLOB_KEY"])
+    blob_service = BlobServiceClient('https://attgantrain123.blob.core.windows.net/', account_key=os.environ["BLOB_KEY"])
 
     seed = 100
     random.seed(seed)

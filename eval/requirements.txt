@@ -5,3 +5,6 @@ scikit-image
 azure-storage-blob
 applicationinsights
 libmc
+future
+SimpleCache
+Werkzeug==0.16.0
