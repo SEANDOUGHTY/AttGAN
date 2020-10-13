@@ -13,7 +13,7 @@ from torch.autograd import Variable
 from miscc.config import cfg
 from miscc.utils import build_super_images2
 from model import RNN_ENCODER, G_NET
-from azure.storage.blob import BlobServiceClient
+from azure.storage.blob import BlobClient
 
 if sys.version_info[0] == 2:
     import cPickle as pickle
@@ -100,7 +100,7 @@ def generate(caption, wordtoix, ixtoword, text_encoder, netG, blob_service, copi
 
     # storing to blob storage
     container_name = "images"
-    full_path = "https://attgan.blob.core.windows.net/images/%s"
+    full_path = "https://attgan123.blob.core.windows.net/images/%s"
     prefix = datetime.now().strftime('%Y/%B/%d/%H_%M_%S_%f')
     urls = []
     # only look at first one
@@ -121,7 +121,20 @@ def generate(caption, wordtoix, ixtoword, text_encoder, netG, blob_service, copi
                 blob_name = '%s/%d/%s_g%d.png' % (prefix, j, "bird", k)
             else:
                 blob_name = '%s/%s_g%d.png' % (prefix, "bird", k)
-            blob_service.create_blob_from_stream(container_name, blob_name, stream)
+
+
+            #blob_service.create_blob_from_stream(container_name, blob_name, stream)
+
+            my_connection_string = "DefaultEndpointsProtocol=https;AccountName=attgantrain123;AccountKey=JtYnNYKOofdWsFkNhYjxL5dV7NuLM6Ad6mcgNoZvb2CQPeQCkzkic7OSbFnBdeW+bdHThlWM3akqP5oK9pP3RQ==;EndpointSuffix=core.windows.net"
+            my_credential = "JtYnNYKOofdWsFkNhYjxL5dV7NuLM6Ad6mcgNoZvb2CQPeQCkzkic7OSbFnBdeW+bdHThlWM3akqP5oK9pP3RQ=="
+
+            blob = BlobClient.from_connection_string(my_connection_string, container_name, blob_name, credential=my_credential)
+            blob.upload_blob(stream, overwrite=True)
+
+
+
+
+
             urls.append(full_path % blob_name)
 
             if copies == 2:
@@ -148,7 +161,14 @@ def generate(caption, wordtoix, ixtoword, text_encoder, netG, blob_service, copi
                         stream.seek(0)
 
                         blob_name = '%s/%s_a%d.png' % (prefix, "attmaps", k)
-                        blob_service.create_blob_from_stream(container_name, blob_name, stream)
+
+                        #blob_service.create_blob_from_stream(container_name, blob_name, stream)
+                        my_connection_string = "DefaultEndpointsProtocol=https;AccountName=attgantrain123;AccountKey=JtYnNYKOofdWsFkNhYjxL5dV7NuLM6Ad6mcgNoZvb2CQPeQCkzkic7OSbFnBdeW+bdHThlWM3akqP5oK9pP3RQ==;EndpointSuffix=core.windows.net"
+
+                        blob = BlobClient.from_connection_string(my_connection_string, container_name, blob_name, credential=my_credential)
+                        blob.upload_blob(stream, overwrite=True)
+
+
                         urls.append(full_path % blob_name)
         if copies == 2:
             break

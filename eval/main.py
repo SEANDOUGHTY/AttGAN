@@ -75,7 +75,9 @@ if __name__ == '__main__':
     # lead models
     text_encoder, netG = models(len(wordtoix))
     # load blob service
-    blob_service = BlobServiceClient('https://attgantrain123.blob.core.windows.net/', account_key=os.environ["BLOB_KEY"])
+
+    #blob_service = BlobServiceClient('https://attgantrain123.blob.core.windows.net/', account_key=os.environ["BLOB_KEY"])
+    blob_service = 0
 
     seed = 100
     random.seed(seed)
